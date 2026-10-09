@@ -43,7 +43,7 @@ fun BMIScreen() {
     var nom: String by remember { mutableStateOf(value = "") }
     var pes: Int by remember { mutableStateOf(value = 80) }
     var altura: Int by remember { mutableStateOf(value = 170) }
-    var imc: Double by remember { mutableStateOf(value = 0.0) }
+    var imc: Float by remember { mutableStateOf(value = 0f) }
     Column() {
         Text(
             text = "Calculate 2",
@@ -74,15 +74,25 @@ fun BMIScreen() {
             modifier = Modifier.padding(16.dp)
         )
         Button(onClick = {
-            val alturaMetros = altura / 100.0
-            imc = pes / (alturaMetros * alturaMetros)
+            var alturaMetros = altura / 100.0
+            imc = (pes / (alturaMetros * alturaMetros)).toFloat()
         }) {
             Text(text = "Calculate")
         }
-        imc?.let{
-            Text(text = "IMC: $imc")
-        }
 
+        if (imc != 0f) {
+            Text(text = "Nom: $nom")
+            Text(text = "IMC: ${String.format(java.util.Locale.US, "%.2f", imc)}")
+            if (imc < 18.5){
+                Text(text = "Underweight")
+            }else if (18.5 < imc && imc < 24.9){
+                Text(text = "Normal weight")
+            }else if (25 < imc && imc < 29.9){
+                Text(text = "Overweight")
+            }else {
+                Text(text = "Obesity")
+            }
+        }
     }
 }
 

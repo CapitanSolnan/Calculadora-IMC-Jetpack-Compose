@@ -4,21 +4,24 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.capitansolnan.calculate2.ui.theme.Calculate2Theme
-import java.util.Locale
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,208 +29,79 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Calculate2Theme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize()
-                ) { innerPadding ->
-                    BMIScreen(modifier = Modifier.padding(innerPadding))
-                }
+                    BMIScreen(
+
+                    )
             }
         }
     }
 }
+
 
 @Composable
-fun BMIScreen(modifier: Modifier = Modifier) {
-    var name by remember { mutableStateOf("") }
-    var weight by remember { mutableStateOf(70) }
-    var height by remember { mutableStateOf(170) }
-    var imc by remember { mutableStateOf(0f) }
-
-    val scrollState = rememberScrollState()
-
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState)
-            .padding(24.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // App Title Header
+fun BMIScreen() {
+    var nom: String by remember { mutableStateOf(value = "") }
+    var pes: Int by remember { mutableStateOf(value = 80) }
+    var altura: Int by remember { mutableStateOf(value = 170) }
+    var imc: Float by remember { mutableStateOf(value = 0f) }
+    Column() {
         Text(
-            text = "BMI Calculator",
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(vertical = 8.dp)
+            text = "Calculate 2",
+            modifier = Modifier.padding(16.dp)
         )
-
-        // Name Field
-        OutlinedTextField(
-            value = name,
-            onValueChange = { name = it },
-            label = { Text("Your Name") },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        // Weight Card
-        ElevatedCard(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.elevatedCardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant
-            )
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Text(
-                    text = "Weight",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Text(
-                    text = "$weight kg",
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Button(
-                        onClick = { if (weight > 20) weight-- },
-                        modifier = Modifier.width(90.dp)
-                    ) {
-                        Text("-", style = MaterialTheme.typography.titleLarge)
-                    }
-                    Spacer(modifier = Modifier.width(24.dp))
-                    Button(
-                        onClick = { if (weight < 300) weight++ },
-                        modifier = Modifier.width(90.dp)
-                    ) {
-                        Text("+", style = MaterialTheme.typography.titleLarge)
-                    }
-                }
-            }
-        }
-
-        // Height Card
-        ElevatedCard(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.elevatedCardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant
-            )
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Text(
-                    text = "Height",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Text(
-                    text = "$height cm",
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Slider(
-                    value = height.toFloat(),
-                    onValueChange = { height = it.toInt() },
-                    valueRange = 100f..250f,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-        }
-
-        // Calculate Button
-        Button(
-            onClick = {
-                val heightMeters = height / 100.0
-                if (heightMeters > 0) {
-                    imc = (weight / (heightMeters * heightMeters)).toFloat()
-                }
+        TextField(
+            value = nom,
+            onValueChange = { nom = it },
+            label = {
+                Text("Nom")
             },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp)
-        ) {
-            Text(
-                text = "Calculate BMI",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
+            modifier = Modifier.padding(16.dp)
+        )
+        Row() {
+            Text(text = "Pes: $pes Kg")
+            Button(onClick = { pes++ }) {
+                Text(text = "+")
+            }
+            Button(onClick = { pes-- }) {
+                Text(text = "-")
+            }
+        }
+        Text(text = "Altura: $altura cm")
+        Slider(
+            value = altura.toFloat(),
+            onValueChange = { altura = it.toInt() },
+            valueRange = 100f..300f,
+            modifier = Modifier.padding(16.dp)
+        )
+        Button(onClick = {
+            var alturaMetros = altura / 100.0
+            imc = (pes / (alturaMetros * alturaMetros)).toFloat()
+        }) {
+            Text(text = "Calculate")
         }
 
-        // Result Section
-        if (imc > 0f) {
-            val (category, categoryColor) = when {
-                imc < 18.5 -> "Underweight" to Color(0xFF2196F3)
-                imc in 18.5..24.9 -> "Normal weight" to Color(0xFF4CAF50)
-                imc in 25.0..29.9 -> "Overweight" to Color(0xFFFF9800)
-                else -> "Obesity" to Color(0xFFF44336)
-            }
-
-            ElevatedCard(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.elevatedCardColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
-                )
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(24.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    if (name.isNotBlank()) {
-                        Text(
-                            text = "Result for $name",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
-                    }
-                    Text(
-                        text = String.format(Locale.US, "%.2f", imc),
-                        style = MaterialTheme.typography.displayMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
-                    Text(
-                        text = category,
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = categoryColor
-                    )
-                }
+        if (imc != 0f) {
+            Text(text = "Nom: $nom")
+            Text(text = "IMC: ${String.format(java.util.Locale.US, "%.2f", imc)}")
+            if (imc < 18.5){
+                Text(text = "Underweight")
+            }else if (18.5 < imc && imc < 24.9){
+                Text(text = "Normal weight")
+            }else if (25 < imc && imc < 29.9){
+                Text(text = "Overweight")
+            }else {
+                Text(text = "Obesity")
             }
         }
     }
 }
 
-@Preview(showBackground = true)
+
+@Preview(showBackground = false)
 @Composable
 fun BMIScreenPreview() {
     Calculate2Theme {
-        Surface {
-            BMIScreen()
-        }
+        BMIScreen()
     }
 }
-
-
 

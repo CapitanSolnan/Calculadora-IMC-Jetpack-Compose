@@ -79,13 +79,15 @@ fun BMIScreen() {
         }) {
             Text(text = "Calculate")
         }
-        Text(text = "IMC: $imc")
+        imc?.let{
+            Text(text = "IMC: $imc")
+        }
 
     }
 }
 
 
-@Preview(showBackground = true)
+@Preview(showBackground = false)
 @Composable
 fun BMIScreenPreview() {
     Calculate2Theme {

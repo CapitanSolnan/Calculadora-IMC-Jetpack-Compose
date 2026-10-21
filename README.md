@@ -1,4 +1,7 @@
 ﻿# Calculadora-IMC-Jetpack-Compose
+Un projecte fet a clase per calcular el IMC
+La branch wow esta fet amb AI.
+
 
 wow Branch -Night mode <br>
 <img width="390" height="838" alt="Captura de pantalla 2026-10-21 191137" src="https://github.com/user-attachments/assets/4eaa8a47-bea2-4ee9-b5e7-d21c9241d5bf" />
